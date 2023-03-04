@@ -1,4 +1,4 @@
-name: Publish 🚀
+name: Published 🚀🚀
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
       - main
 
 env:
-  AZURE_WEBAPP_NAMEE: ane-frontend-data
+  AZURE_WEBAPP_NAME: ane-frontend-data
   AZURE_WEBAPP_PACKAGE_PATH: './publish'
 
 jobs:
@@ -34,6 +34,6 @@ jobs:
       - name: Deployment
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAMEE }}
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
           package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
