@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
             name: data
-            path: ${{ env.artifactPath }}/data/**
+            path: ./data/**
             if-no-files-found: error
 
       - name: Deployment
