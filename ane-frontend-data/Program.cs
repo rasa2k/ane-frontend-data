@@ -12,8 +12,24 @@ builder.Services.AddAuthentication().AddJwtBearer();
 builder.Services.AddAuthorization();
 builder.Services.AddSwaggerGen(opts => opts.EnableAnnotations());
 
+#if DEBUG
+builder.Services.AddCors(options =>{
+    options.AddPolicy("MyAllowedOrigins",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+#endif
 
 var app = builder.Build();
+
+#if DEBUG
+app.UseCors("MyAllowedOrigins");
+#endif
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -26,14 +42,22 @@ app.UseHttpsRedirection();
 // GET UTC
 app.MapGet("time/utc", () => Results.Ok(DateTime.UtcNow)).WithMetadata(new SwaggerOperationAttribute(summary: "Summary", description: "Descritption Test"));
 
-app.MapGet("/show/", async () =>
+app.MapGet("/myapi", () =>
 {
-    var reader = new StreamReader("./data/topoJson.json");
-    string postData = await reader.ReadToEndAsync();
-
-    //var data = JsonSerializer.Serialize(postData);
-    return await Task.FromResult<string>(postData);
+    var json = File.ReadAllText(".data/topoJson.json");
+    var jo = JsonSerializer.Deserialize<object>(json);
+    return Results.Json(jo);
 });
+
+/*app.MapGet("/show/",  () =>
+
+    //var reader = new StreamReader("./data/topoJson.json");
+    //string postData = await reader.ReadToEndAsync();
+
+    Results.Ok("13")
+    //var data = JsonSerializer.Serialize(postData);
+    //return await Task.FromResult<string>(postData);
+);*/
 
 app.MapGet("/users", async (UserDbContext context) =>
 await context.Users.ToListAsync())
