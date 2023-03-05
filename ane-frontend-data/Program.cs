@@ -26,7 +26,7 @@ app.UseHttpsRedirection();
 // GET UTC
 app.MapGet("time/utc", () => Results.Ok(DateTime.UtcNow)).WithMetadata(new SwaggerOperationAttribute(summary: "Summary", description: "Descritption Test"));
 
-app.MapPost("/show/", async (HttpRequest request) =>
+app.MapPost("/show/", async () =>
 {
     var reader = new StreamReader("./data/topoJson.json");
     string postData = await reader.ReadToEndAsync();
