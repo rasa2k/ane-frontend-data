@@ -40,25 +40,15 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 // GET UTC
-app.MapGet("time/utc", () => Results.Ok(DateTime.UtcNow)).WithMetadata(new SwaggerOperationAttribute(summary: "Summaryyyy", description: "Descritption Test"));
+app.MapGet("time/utc", () => Results.Ok(DateTime.UtcNow)).WithMetadata(new SwaggerOperationAttribute(summary: "Summary", description: "Descritption Test"));
 
 app.MapGet("/myapi", () =>
 {
-    var file = Path.Combine(Directory.GetCurrentDirectory(), "data", "topoJson.json");
-    var json = System.IO.File.ReadAllText(file);//File.ReadAllText(".data/topoJson.json");
+    //var file = Path.Combine(Directory.GetCurrentDirectory(), "data", "topoJson.json");
+    var json = File.ReadAllText(".data/topoJson.json");//System.IO.File.ReadAllText(file);//File.ReadAllText(".data/topoJson.json");
     var jo = JsonSerializer.Deserialize<object>(json);
     return Results.Json(jo);
 });
-
-/*app.MapGet("/show/",  () =>
-
-    //var reader = new StreamReader("./data/topoJson.json");
-    //string postData = await reader.ReadToEndAsync();
-
-    Results.Ok("13")
-    //var data = JsonSerializer.Serialize(postData);
-    //return await Task.FromResult<string>(postData);
-);*/
 
 app.MapGet("/users", async (UserDbContext context) =>
 await context.Users.ToListAsync())
