@@ -1,15 +1,22 @@
 using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.EntityFrameworkCore;
 using aneFrontendData;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<UserDbContext>(options => options.UseInMemoryDatabase("Users"));
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddAuthentication().AddJwtBearer();
+builder.Services.AddAuthorization();
 builder.Services.AddSwaggerGen(opts => opts.EnableAnnotations());
 
+
 var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
+
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -17,7 +24,16 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 // GET UTC
-app.MapGet("time/utc", () => Results.Ok(DateTime.UtcNow)).WithMetadata(new SwaggerOperationAttribute(summary: "Summary", description: "Descritption Test")); ;
+app.MapGet("time/utc", () => Results.Ok(DateTime.UtcNow)).WithMetadata(new SwaggerOperationAttribute(summary: "Summary", description: "Descritption Test"));
+
+app.MapPost("/show/", async (HttpRequest request) =>
+{
+    var reader = new StreamReader("./data/topoJson.json");
+    string postData = await reader.ReadToEndAsync();
+
+    //var data = JsonSerializer.Serialize(postData);
+    return await Task.FromResult<string>(postData);
+});
 
 app.MapGet("/users", async (UserDbContext context) =>
 await context.Users.ToListAsync())
