@@ -2,7 +2,6 @@ using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.EntityFrameworkCore;
 using aneFrontendData;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,12 +41,11 @@ app.UseHttpsRedirection();
 // GET UTC
 app.MapGet("time/utc", () => Results.Ok(DateTime.UtcNow)).WithMetadata(new SwaggerOperationAttribute(summary: "Summary", description: "Descritption Test"));
 
-app.MapGet("/topojson", () =>
+app.MapGet("/topojson", (string filename) =>
 {
-    //var file = Path.Combine(Directory.GetCurrentDirectory(), "data", "topoJson.json");
-    var json = File.ReadAllText("./data/topoJson.json");//System.IO.File.ReadAllText(file);//File.ReadAllText(".data/topoJson.json");
-    var jo = JsonSerializer.Deserialize<object>(json);
-    return Results.Json(jo);
+    var topofile = File.ReadAllText($"./data/{filename}.json");
+    var object_topofile = JsonSerializer.Deserialize<object>(topofile);
+    return  Results.Json(object_topofile);
 });
 
 app.MapGet("/users", async (UserDbContext context) =>
