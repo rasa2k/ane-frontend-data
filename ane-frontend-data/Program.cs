@@ -39,18 +39,19 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 // GET UTC
-app.MapGet("time/utc", () => Results.Ok(DateTime.UtcNow)).WithMetadata(new SwaggerOperationAttribute(summary: "Summary", description: "Descritption Test"));
+app.MapGet("time/utc", () => Results.Ok(DateTime.UtcNow)).WithMetadata(new SwaggerOperationAttribute(summary: "UTC String", description: "Descritption..."));
 
 app.MapGet("/topojson", (string filename) =>
 {
     var topofile = File.ReadAllText($"./data/{filename}.json");
     var object_topofile = JsonSerializer.Deserialize<object>(topofile);
-    return  Results.Json(object_topofile);
-});
+    return Results.Json(object_topofile);
+}).WithMetadata(new SwaggerOperationAttribute(summary: "Topo JSON Files"));
 
 app.MapGet("/users", async (UserDbContext context) =>
 await context.Users.ToListAsync())
-.WithName("GetAllUsers");
+.WithName("GetAllUsers")
+.WithMetadata(new SwaggerOperationAttribute(summary: "UseInMemoryDatabase"));
 
 app.MapGet("/users/{id}", async (int id, UserDbContext context) =>
 await context.Users.FindAsync(id)
@@ -58,6 +59,7 @@ await context.Users.FindAsync(id)
         ? Results.Ok(user)
         : Results.NotFound())
 .WithName("GetUserById")
+.WithMetadata(new SwaggerOperationAttribute(summary: "UseInMemoryDatabase"))
 .Produces<User>(StatusCodes.Status200OK)
 .Produces(StatusCodes.Status404NotFound);
 
@@ -69,6 +71,7 @@ app.MapPost("/users", async (User user, UserDbContext context) =>
     return Results.Created($"/users/{user.Id}", user);
 })
 .WithName("PostUser")
+.WithMetadata(new SwaggerOperationAttribute(summary: "UseInMemoryDatabase"))
 .ProducesValidationProblem()
 .Produces<User>(StatusCodes.Status201Created);
 
@@ -84,6 +87,7 @@ app.MapPut("/users/{id}", async (int id, User userUpdate, UserDbContext context)
     return Results.NoContent();
 })
 .WithName("UpdateUser")
+.WithMetadata(new SwaggerOperationAttribute(summary: "UseInMemoryDatabase"))
 .ProducesValidationProblem()
 .Produces(StatusCodes.Status204NoContent)
 .Produces(StatusCodes.Status404NotFound);
@@ -100,6 +104,7 @@ app.MapDelete("/users/{id}", async (int id, UserDbContext context) =>
     return Results.NotFound();
 })
 .WithName("DeleteUser")
+.WithMetadata(new SwaggerOperationAttribute(summary: "UseInMemoryDatabase"))
 .Produces(StatusCodes.Status204NoContent)
 .Produces(StatusCodes.Status404NotFound);
 
