@@ -30,19 +30,6 @@ jobs:
 
       - name: Publish
         run: dotnet publish ./ane-frontend-data.sln --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
-        
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: my-artifact
-          path: ./ane-frontend-data/data/**
-          if-no-files-found: error
-
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
-        with:
-          name: my-artifact
-          path: ~/wwwroot/data
 
       - name: Deployment
         uses: azure/webapps-deploy@v2
