@@ -40,7 +40,7 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 // GET UTC
-app.MapGet("time/utc", () => Results.Ok(DateTime.UtcNow)).WithMetadata(new SwaggerOperationAttribute(summary: "Summary", description: "Descritption Test"));
+app.MapGet("time/utc", () => Results.Ok(DateTime.UtcNow)).WithMetadata(new SwaggerOperationAttribute(summary: "Summaryyyy", description: "Descritption Test"));
 
 app.MapGet("/myapi", () =>
 {
