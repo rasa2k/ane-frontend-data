@@ -34,7 +34,7 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3
         with:
-          path: data/**
+          path: ./ane-frontend-data/data/**
           if-no-files-found: error
 
       - name: Deployment
