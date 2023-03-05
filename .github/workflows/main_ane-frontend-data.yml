@@ -37,6 +37,12 @@ jobs:
           path: ./ane-frontend-data/data/**
           if-no-files-found: error
 
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: my-artifact
+          path: ~/wwwroot/data
+
       - name: Deployment
         uses: azure/webapps-deploy@v2
         with:
