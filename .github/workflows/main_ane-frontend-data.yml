@@ -34,9 +34,8 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3
         with:
-            name: data
-            path: ./data/**
-            if-no-files-found: error
+          path: data/**
+          if-no-files-found: error
 
       - name: Deployment
         uses: azure/webapps-deploy@v2
