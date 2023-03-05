@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="data\**" />
+    <Content Remove="data\**"/>
   </ItemGroup>
 
   <ItemGroup>
@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="data\**" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="data\**"  CopyToOutputDirectory="PreserveNewest"/>
   </ItemGroup>
 
 </Project>
