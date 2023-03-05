@@ -42,7 +42,7 @@ app.UseHttpsRedirection();
 // GET UTC
 app.MapGet("time/utc", () => Results.Ok(DateTime.UtcNow)).WithMetadata(new SwaggerOperationAttribute(summary: "Summary", description: "Descritption Test"));
 
-app.MapGet("/myapi", () =>
+app.MapGet("/topojson", () =>
 {
     //var file = Path.Combine(Directory.GetCurrentDirectory(), "data", "topoJson.json");
     var json = File.ReadAllText(".data/topoJson.json");//System.IO.File.ReadAllText(file);//File.ReadAllText(".data/topoJson.json");
