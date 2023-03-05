@@ -44,7 +44,8 @@ app.MapGet("time/utc", () => Results.Ok(DateTime.UtcNow)).WithMetadata(new Swagg
 
 app.MapGet("/myapi", () =>
 {
-    var json = File.ReadAllText(".data/topoJson.json");
+    var file = Path.Combine(Directory.GetCurrentDirectory(), "data", "topoJson.json");
+    var json = System.IO.File.ReadAllText(file);//File.ReadAllText(".data/topoJson.json");
     var jo = JsonSerializer.Deserialize<object>(json);
     return Results.Json(jo);
 });
